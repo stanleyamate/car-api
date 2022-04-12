@@ -15,7 +15,6 @@ const verifyToken = (req, res, next) => {
      req.userData = decoded;
     next();
   } catch (err) {
-    //for subscription checker
     return res.status(403).send("Invalid Token");
   }
 };

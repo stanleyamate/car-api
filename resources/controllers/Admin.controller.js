@@ -1,5 +1,4 @@
 import { User } from '../models/user.model.js';
-import jwt from 'jsonwebtoken'
 import { Services } from '../models/sevices.model.js';
 
 export  const getOneUser = async(req, res)=>{
@@ -12,7 +11,7 @@ export  const getOneUser = async(req, res)=>{
     res.status(200).json({ data: doc });
 }
 export const getAllActiveUsers = async(req, res)=>{
-    const doc = await User.find({  }).exec();
+    const doc = await User.find({ isActive:true }).exec();
     if (!doc) {
         res.status(404).end();
     }
@@ -82,7 +81,6 @@ export const createService = async (req, res)=>{
       res.status(404).json({msg: "not found"})
   }
   res.status(200).json({doc :doc});
-
 }
 export const updateService = async (req, res)=>{
 

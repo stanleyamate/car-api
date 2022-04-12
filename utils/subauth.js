@@ -1,7 +1,7 @@
 
 
 
-const checksubscribe = async (req, res, next)=>{
+const checkUser = async (req, res, next)=>{
     const userData = req.userData;
     
     if(req.userData.role == "user"){
@@ -10,4 +10,4 @@ const checksubscribe = async (req, res, next)=>{
         next();
     }
 }
-export default checksubscribe
+export default checkUser

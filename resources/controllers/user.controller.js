@@ -21,7 +21,7 @@ export const register =async (req, res, next) => {
     const oldUser = await User.findOne({ email: email });
     
     if (oldUser) {
-      return res.status(409).send("User Already Exist. Please Login");
+      return res.status(409).json({msg:"User Already Exist. Please Login"});
     }
     // if(password != password2){
     //     return res.status(400).send({message: "passwords to do not match"})
@@ -66,6 +66,15 @@ export const register =async (req, res, next) => {
       console.log(err);
     }
   }
+  export const updateCar = async (req, res)=>{
+     const id=req.params.id 
+    const doc = await User.findOneAndUpdate({ _id : id },req.file.path,
+        { new: true }).exec()
+       return res.status(200).json({
+        message :"Car Image Added...",
+      doc
+    })
+  }
   const storage = multer.diskStorage({
     destination:function(req, file, cb){
         cb(null, './uploads/')
@@ -92,34 +101,42 @@ export const uploadImg = multer({
 
   //subscribe
   export const subscribe = async (req, res)=>{
-    // try {
-    //   await User.findOne({ _id:id});
     
-    // } catch (error) {
-    //   res.status(404).json({message:"user not found", error: error});
-    // }
     const userData = req.userData;
-
+    const id =req.params.id;
     try {
-      const { email, plan} = req.body;
+      const { plan } = req.body;
 
-      const user = await User.findOne({email: email})
+      const user = await User.findOne({_id:id})
       if(userData.isActive == true){
         res.json({msg:"user already subscribed"});
       }
       else if(plan == "none"){
         user.isActive=false;
-        res.status(500).json({msg:"no plan choosen, please choose plan first to subscribe"})
+          
+          // return new user
+        res.status(200).json({msg:"no plan choosen, please choose plan first to subscribe"})
         }
       else if(plan == "weekly"){
-        user.isActive=true;
+
+        const update = await User.findOneAndUpdate(
+          { _id : id},req.body, { new: true }
+          )
+          .exec()
         user.end_date=moment(new Date()).add(7,"days").format("YYYY-MM-DD hh:mm");
-        res.status(200).json({message:"subscribe weekly successful", user:user})
+        res.status(200).json({message:"subscribe weekly successful", update})
       }
       else if(plan == "monthly"){
-        user.isActive=true;
-        user.end_date=moment(new Date()).add(30,"days").format("YYYY-MM-DD hh:mm");
-        res.status(200).json({message:"subscribe monthly successful", user:user})
+         try {
+          const update = await User.findOneAndUpdate(
+            { _id : id},req.body, { new: true }
+            )
+            .exec()
+     user.end_date=moment(new Date()).add(30,"days").format("YYYY-MM-DD hh:mm");
+     res.status(200).json({message:"subscribe monthly successful",update})
+         } catch (error) {
+           console.log(error)
+         }
       }
       else{
           res.status(403).end()
@@ -127,21 +144,39 @@ export const uploadImg = multer({
     } catch (e) {
       return res.status(401).json({message:"error", error:e})
     }
-    // try {
-    //     var car = await Cars.findOne({ _id : req.params.id });
-    // } catch (e) {
-    //     return res.status(404).json({ message: "car not found!", errors: e.message });
-    // }
     
-    // try {
-    //     var user = await User.findOne({ username });
-    // } catch (e) {
-    //     return res.status(500).json({ message: "Error getting user", errors: e.message });
-    // }
-    
-    // res.json({ 'success': true, user: user });
     
   }
+  export const unsubscribe = async (req, res)=>{
+    
+    const userData = req.userData;
+    const id =req.params.id;
+
+    try {
+         const doc = await User.findOne({ _id:id }).exec()
+          if (doc && userData.isActive === false) {
+            res.status(409).json({msg:"user already unsubscribed"});
+          }
+          else{
+          try {
+            const update = await User.findOneAndUpdate(
+              { _id : id},req.body, { new: true }
+              )
+              .exec()
+            res.status(200).json({update:update,msg:"user unsubscribed successful"});
+
+          } catch (error) {
+            console.log(error)
+          }
+         
+        }
+  
+      } catch(error) {
+          console.log(error)
+    }
+    
+  }
+
   // Login
   export const login =async (req, res) => {
     // Our login logic starts here
@@ -161,7 +196,7 @@ export const uploadImg = multer({
           { user_id: user._id, email},
           process.env.TOKEN_KEY,
           {
-            expiresIn: "30days",
+            expiresIn: "1d",
           }
           );
 
