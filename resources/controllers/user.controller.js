@@ -188,7 +188,7 @@ export const uploadImg = multer({
               { _id : id},req.body, { new: true }
               )
               .exec()
-            res.status(200).json({update:update, message:"user unsubscribe successful"});
+            res.status(200).json({update:update, message:"user unsubscribed successful"});
 
           } catch (error) {
             console.log(error)
@@ -237,7 +237,7 @@ export const uploadImg = multer({
           // save user tok en
           user.token = token;
           // user
-          return res.status(200).json({message:"Login successful",user:user, token});
+          return res.status(200).json({message:"Logged successful",user:user, token});
         }
       } catch (err) {
         console.log(err);
