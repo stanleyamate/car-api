@@ -11,7 +11,7 @@ export  const getOneUser = async(req, res)=>{
     res.status(200).json({ data: doc });
 }
 export const getAllActiveUsers = async(req, res)=>{
-    const doc = await User.find({ isActive:true }).exec();
+    const doc = await User.find().exec();
     if (!doc) {
         res.status(404).end();
     }
@@ -35,7 +35,7 @@ export const updateUser = async (req, res) => {
             if (!doc) {
                 res.status(400).end()
             }  
-            res.status(200).json({ data: doc })
+            res.status(200).json({message:"User updated", data: doc })
     } catch(error) {
         console.log(error)
     }
@@ -51,7 +51,7 @@ export const updateUser = async (req, res) => {
         if (!doc) {
             res.status(400).end()
         }
-        res.status(200).json({ data: doc })
+        res.status(200).json({message:"User deleted", data: doc })
     }
 
 
@@ -71,14 +71,14 @@ export const updateUser = async (req, res) => {
     const doc = await Services.find().exec()
     res.status(200).json({doc:doc})
   } catch (error) {
-      res.status(404).json({msg : "services not found"});
+      res.status(404).json({message : "services not found"});
   }
 }
 export const createService = async (req, res)=>{
 
   const doc = await Services.create({ ...req.body })
   if(!doc){
-      res.status(404).json({msg: "not found"})
+      res.status(404).json({message: "not found"})
   }
   res.status(200).json({doc :doc});
 }
@@ -102,7 +102,7 @@ export const deleteService = async (req, res)=>{
   if (!doc) {
     res.status(400).end()
   }
-  res.status(200).json({ data: doc })
+  res.status(200).json({message:"service deleted", data: doc })
 }
 
 

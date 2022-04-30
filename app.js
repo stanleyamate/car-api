@@ -22,7 +22,6 @@ app.use(express.json({extended: true}))
 app.use(express.urlencoded({extended: true}))
 
 app.use('/uploads',express.static('uploads'))
-// app.disabled('x-powered-by')
 app.use(morgan(
     function(tokens, req, res){
         return [
@@ -41,6 +40,7 @@ mongoose.connect('mongodb+srv://jamjohnson:sta78726486@cluster0.orzn2.mongodb.ne
 }
 )
 
+
 //user routes
 app.post('/register',uploadImg, register)
 app.post('/login', login)
@@ -49,16 +49,25 @@ app.get('/service', getAllServices)
 app.use('/api', auth)
 app.patch('/api/subscribe/:id', subscribe)
 app.patch('/api/unsubscribe/:id', unsubscribe)
-app.patch('/api/car/:id', updateCar)
-// app.use('/cars',uploadImg, carRouter)
+app.patch('/api/car/:id',uploadImg, updateCar)
 app.use('/api/admin/carlist',checkUser, carListRouter)
 app.use('/api/admin',checkUser, adminRouter)
+app.use( (req, res, next)=>{
+    const error = new Error("Not Found");
+    error.status=404;
+    next(error)
+})
+app.use((error, req, res, next)=>{
+       res.status(error.status || 500);
+       res.json({
+           error:{
+               message: error.message
+           }
+       });
+})
 
-app.get('/api/dashboard', checkUser, (req, res)=>{res.json({dashboard:"fully subscribed"})})
 
 app.listen(process.env.PORT,() => {
      console.log(`app is listening to port ${process.env.PORT}`);
 })
-
-
 

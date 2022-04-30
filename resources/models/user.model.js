@@ -35,13 +35,14 @@ const userSchema = new mongoose.Schema(
         },
         car_model:  { 
             type: String,
-            // required: [true,"car model must be filled"],
+            required: [true,"car model must be filled"],
              maxLength:20
         },
           image:{
             type: String,
-            // required: [true, "car image is required"]
+            required: [true, "car image is required"]
           },
+         
         role: {
             type:String,
             enum:["user","admin"],
@@ -52,7 +53,11 @@ const userSchema = new mongoose.Schema(
             default:false
         },
         end_date:{
-            type:Date
+            type: Date
+        },
+        show_end_date:{
+            type:String,
+            default: Date
         },
         token:{
             type:String
