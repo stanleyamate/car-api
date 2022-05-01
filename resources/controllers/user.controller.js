@@ -8,21 +8,28 @@ import moment from 'moment'
 export const register =async (req, res, next) => {
   // Our register logic starts here
   var encryptedPassword;
+   // Get user input
+    var { full_names, username, email, password, plan, role, isActive, car_model, end_date, show_end_date} = req.body; 
+    try {
+        // check if user already exist
+       // Validate if user exist in our database
+      const oldUser = await User.findOne({ username });
+    
+    if (oldUser) {
+      return res.status(409).json({message:"User Already Exist."});
+    }
+    } catch (error) {
+      console.log(error)
+    }
+    
   try {
-    // Get user input
-    var { full_names, username, email, password, plan, role, isActive, car_model, end_date, show_end_date} = req.body;
+   
     
     // Validate user input
     if (!(email && password && full_names && username)) {
       res.status(400).json({message:"All inputs are required"});
     }
-    // check if user already exist
-    // Validate if user exist in our database
-    const oldUser = await User.findOne({ email: email });
-    
-    if (oldUser) {
-      return res.status(409).json({message:"User Already Exist. Please Login"});
-    }
+ 
     // if(password != password2){
     //     return res.status(400).send({message: "passwords to do not match"})
     // }
@@ -257,6 +264,8 @@ export const uploadImg = multer({
           user.token = token;
           // user
           return res.status(200).json({message:"Logged successful",user:user, token});
+        }else{
+         return res.status(401).json({message:"Invalid credentials"})
         }
       } catch (err) {
         console.log(err);

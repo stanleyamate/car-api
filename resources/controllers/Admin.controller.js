@@ -25,7 +25,6 @@ export const updateUser = async (req, res) => {
     }else{
         isActive=true
     }
-    
     try {
         const doc = await User
         .findOneAndUpdate(
@@ -40,7 +39,6 @@ export const updateUser = async (req, res) => {
         console.log(error)
     }
 }
-    
     export const removeUser =async (req, res) => {
         const id =req.params.id;
         const doc = await User
