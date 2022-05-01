@@ -34,13 +34,10 @@ const userSchema = new mongoose.Schema(
             required:[true, "please choose plan"]
         },
         car_model:  { 
-            type: String,
-            required: [true,"car model must be filled"],
-             maxLength:20
+            type: String
         },
           image:{
-            type: String,
-            required: [true, "car image is required"]
+            type: String
           },
          
         role: {

@@ -41,25 +41,8 @@ export const register =async (req, res, next) => {
       end_date=moment(new Date()).add(30,"days").format("YYYY-MM-DD hh:mm");
       show_end_date=moment(new Date()).add(30,"days").format("YYYY-MM-DD hh:mm");
   }
-    //Create user in our database
-    const user = await User.create({
-      full_names,
-      username,
-      email,
-      password: encryptedPassword,
-      plan,
-      isActive,
-      role,
-      car_model,
-      end_date,
-      show_end_date,
-      image: req.file.path
-    });
-
-    
-   
-
-  //Create token
+  //ofunction to Create token
+  const createToken=(user)=>{
     const token = jwt.sign(
       { user_id: user._id, email, isActive: user.isActive, role: user.role, end_date: user.end_date, show_end_date: user.show_end_date },
       process.env.TOKEN_KEY,
@@ -72,11 +55,47 @@ export const register =async (req, res, next) => {
       
       // return new user
       return res.status(201).json({message:"Registration successful", user});
-      next()
+  }
+    //Create user in our database
+    if(req.file){
+      const user = await User.create({
+        full_names,
+        username,
+        email,
+        password: encryptedPassword,
+        plan,
+        isActive,
+        role,
+        car_model,
+        end_date,
+        show_end_date,
+        image: req.file.path
+      });
+      createToken(user)
+    }else{
+      const user = await User.create({
+        full_names,
+        username,
+        email,
+        password: encryptedPassword,
+        plan,
+        isActive,
+        role,
+        car_model,
+        end_date,
+        show_end_date
+      });
+      createToken(user)
+    }
+
+  
     } catch (err) {
       console.log(err);
     }
   }
+    const createtoken=()=>{
+      
+    }
   export const updateCar = async (req, res)=>{
      const id=req.params.id 
       if(req.file){ 
