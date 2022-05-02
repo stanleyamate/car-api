@@ -12,8 +12,6 @@ export const subscriptionChecker = (req, res)=>{
                 const user = findUsers[i];
                 let userDueDate = moment(user.end_date).format("YYYY-MM-DD hh:mm");
                 if(user.isActive === true && (today === userDueDate || today > userDueDate)){
-                    // let find_user = await User.findById({_id:users._id});
-                    // find_user.isActive = false;
                     try {
                         await User.findOneAndUpdate(
                           { _id : user._id},{ plan: "none", isActive:false, end_date: null}, { new: true }
