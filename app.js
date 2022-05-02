@@ -11,6 +11,7 @@ import adminRouter from './resources/routes/admin.router.js'
 import auth from './utils/auth.js';
 import checkUser from './utils/subauth.js';
 import checkActive from './utils/checkActive.js';
+import { subscriptionChecker } from './utils/job.js';
 
 
 const app = express()
@@ -42,6 +43,7 @@ mongoose.connect('mongodb+srv://jamjohnson:sta78726486@cluster0.orzn2.mongodb.ne
 
 
 //user routes
+app.get('/', (req, res)=>res.send({message:"welcome to auto-care api"}))
 app.post('/register',uploadImg, register)
 app.post('/login', login)
 app.get('/service', getAllServices)
@@ -65,7 +67,8 @@ app.use((error, req, res, next)=>{
            }
        });
 })
-
+// run cron job
+subscriptionChecker()
 
 app.listen(process.env.PORT,() => {
      console.log(`app is listening to port ${process.env.PORT}`);

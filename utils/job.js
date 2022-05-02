@@ -1,19 +1,30 @@
 import cron from 'node-cron'
 import moment from 'moment'
-import User from '../resources/models/user.model.js'
+import { User } from '../resources/models/user.model.js'
 
-cron.schedule('* * * * *',async ()=>{
-
-    let today = moment(new Date()).format("YYYY-MM-DD hh:mm");
-    const findusers = await User.find({isActive: true});
-    if(findusers){
-        for(let i = 0; i < findusers.length; i++) {
-            const users = findusers[i];
-            let userDueDate = moment(users.updatedAt).format("YYYY-MM-DD hh:mm");
-            if(today === userDueDate){
-                let find_user = await User.findById({_id:users._id});
-                find_user.isActive = false;
+export const subscriptionChecker = (req, res)=>{
+    cron.schedule('30 * * * * *',async function(){
+        console.log("subscription checker ran...")
+        let today = moment(new Date()).format("YYYY-MM-DD hh:mm");
+        const findUsers = await User.find({isActive: true});
+        if(findUsers){
+            for(let i = 0; i < findUsers.length; i++) {
+                const user = findUsers[i];
+                let userDueDate = moment(user.end_date).format("YYYY-MM-DD hh:mm");
+                if(user.isActive === true && (today === userDueDate || today > userDueDate)){
+                    // let find_user = await User.findById({_id:users._id});
+                    // find_user.isActive = false;
+                    try {
+                        await User.findOneAndUpdate(
+                          { _id : user._id},{ plan: "none"}, { new: true }
+                          )
+                          .exec()
+                          console.log(`${user.username} subscription has expired`)
+                      } catch (error) {
+                        console.log(error)
+                      }
+                }
             }
         }
-    }
-})
+    })
+}
