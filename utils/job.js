@@ -4,7 +4,7 @@ import { User } from '../resources/models/user.model.js'
 
 export const subscriptionChecker = (req, res)=>{
     cron.schedule('30 * * * * *',async function(){
-        console.log("subscription checker ran...")
+        console.log("subscription expiratory checker running...")
         let today = moment(new Date()).format("YYYY-MM-DD hh:mm");
         const findUsers = await User.find({isActive: true});
         if(findUsers){
@@ -16,7 +16,7 @@ export const subscriptionChecker = (req, res)=>{
                     // find_user.isActive = false;
                     try {
                         await User.findOneAndUpdate(
-                          { _id : user._id},{ plan: "none"}, { new: true }
+                          { _id : user._id},{ plan: "none", isActive:false, end_date: null}, { new: true }
                           )
                           .exec()
                           console.log(`${user.username} subscription has expired`)
