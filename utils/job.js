@@ -3,7 +3,7 @@ import moment from 'moment'
 import { User } from '../resources/models/user.model.js'
 
 export const subscriptionChecker = ()=>{
-    cron.schedule('* * * * *',async function(){
+    cron.schedule('30 * * * *',async function(){
         console.log("--- Subscription expiratory checker STARTED ---")
         let today = moment(new Date()).format("YYYY-MM-DD hh:mm");
         const findUsers = await User.find({isActive: true});

@@ -6,7 +6,6 @@ const verifyToken = (req, res, next) => {
 
   const tokenHeader = req.headers.authorization;
    if(tokenHeader == null || tokenHeader == undefined){
-    console.log("not auth");
     return res.status(401).send("A token is required for authentication");
   }
   try {

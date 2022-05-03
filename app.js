@@ -4,7 +4,6 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import "dotenv/config.js";
 import carListRouter from './resources/routes/carListRoute.js'
-import carRouter from './resources/routes/carsRouter.js'
 import { register, login, subscribe, unsubscribe, uploadImg, updateCar } from './resources/controllers/user.controller.js'
 import {getAllServices} from './resources/controllers/services.controller.js'
 import adminRouter from './resources/routes/admin.router.js'
@@ -34,13 +33,13 @@ app.use(morgan(
         ].join(' ');
     }
 ))
- 
-mongoose.connect('mongodb+srv://jamjohnson:sta78726486@cluster0.orzn2.mongodb.net/auto-care?retryWrites=true&w=majority', function(err) {
+
+
+mongoose.connect(process.env.URL, function(err) {
     if (err) throw err;
     console.log("Database Running...");
 }
 )
-
 //user routes
 app.get('/', (req, res)=>res.send({message:"welcome to auto-care api"}))
 app.post('/register',uploadImg, register)

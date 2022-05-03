@@ -3,7 +3,7 @@ const checkActive = async (req, res, next)=>{
     const userData = req.userData;
     
     if(req.userData.isActive == false){
-        res.status(401).json({ msg : "not auth, select plan to subcribe" })
+        res.status(401).json({ message : "not auth, select plan to subscribe" })
     }else{
         next();
     }
