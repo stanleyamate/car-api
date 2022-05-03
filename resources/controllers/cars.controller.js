@@ -44,9 +44,7 @@ export const updateCar= async(req, res)=>{
     res.status(200).json({ data: doc })
 }
 export const getAllCars= async(req, res)=>{
-    const targetId = req.params.carId
   const docs = await Cars
-//   .find({createdBy: targetId})
   .find()
   .select('car_model createdBy _id image')
   .exec()

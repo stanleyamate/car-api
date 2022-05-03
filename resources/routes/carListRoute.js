@@ -1,13 +1,11 @@
 import Router from 'express'
-import carListControllers from '../controllers/carList.controllers.js'
+import getMany from '../controllers/carList.controllers.js'
 
 const router = Router()
 
 router
   .route('/')
-  .get(carListControllers.getMany)
-  .post(carListControllers.createOne)
+  .get(getMany)
 router
   .route('/:id')
-  .get(carListControllers.getOne)
 export default router;

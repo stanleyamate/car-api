@@ -41,7 +41,6 @@ mongoose.connect('mongodb+srv://jamjohnson:sta78726486@cluster0.orzn2.mongodb.ne
 }
 )
 
-
 //user routes
 app.get('/', (req, res)=>res.send({message:"welcome to auto-care api"}))
 app.post('/register',uploadImg, register)
@@ -52,7 +51,7 @@ app.use('/api', auth)
 app.patch('/api/subscribe/:id', subscribe)
 app.patch('/api/unsubscribe/:id', unsubscribe)
 app.patch('/api/car/:id',uploadImg, updateCar)
-app.use('/api/admin/carlist',checkUser, carListRouter)
+app.use('/api/admin/carlist', carListRouter)
 app.use('/api/admin',checkUser, adminRouter)
 app.use( (req, res, next)=>{
     const error = new Error("Not Found");
@@ -67,7 +66,8 @@ app.use((error, req, res, next)=>{
            }
        });
 })
-// run cron job
+
+// run cron job to check for expired users
 subscriptionChecker()
 
 app.listen(process.env.PORT,() => {

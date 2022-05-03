@@ -2,9 +2,9 @@ import cron from 'node-cron'
 import moment from 'moment'
 import { User } from '../resources/models/user.model.js'
 
-export const subscriptionChecker = (req, res)=>{
-    cron.schedule('30 * * * * *',async function(){
-        console.log("subscription expiratory checker running...")
+export const subscriptionChecker = ()=>{
+    cron.schedule('5 * * * *',async function(){
+        console.log("--- Subscription expiratory checker STARTED ---")
         let today = moment(new Date()).format("YYYY-MM-DD hh:mm");
         const findUsers = await User.find({isActive: true});
         if(findUsers){
@@ -17,12 +17,15 @@ export const subscriptionChecker = (req, res)=>{
                           { _id : user._id},{ plan: "none", isActive:false, end_date: null}, { new: true }
                           )
                           .exec()
-                          console.log(`${user.username} subscription has expired`)
+                          console.log(`${user.username} Unsubscription succeeded`)
                       } catch (error) {
                         console.log(error)
                       }
+                      
                 }
             }
         }
+            console.log("--- Subscription expiratory checker ENDED ---")
+          
     })
 }
