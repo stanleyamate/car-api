@@ -214,7 +214,7 @@ export const uploadImg = multer({
               { _id : id},req.body, { new: true }
               )
               .exec()
-            res.status(200).json({update:update, message:"user unsubscribed successful"});
+            res.status(200).json({update, message:"user unsubscribed successful"});
 
           } catch (error) {
             console.log(error)

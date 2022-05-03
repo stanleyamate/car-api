@@ -3,7 +3,7 @@ import moment from 'moment'
 import { User } from '../resources/models/user.model.js'
 
 export const subscriptionChecker = ()=>{
-    cron.schedule('5 * * * *',async function(){
+    cron.schedule('* * * * *',async function(){
         console.log("--- Subscription expiratory checker STARTED ---")
         let today = moment(new Date()).format("YYYY-MM-DD hh:mm");
         const findUsers = await User.find({isActive: true});
@@ -11,10 +11,10 @@ export const subscriptionChecker = ()=>{
             for(let i = 0; i < findUsers.length; i++) {
                 const user = findUsers[i];
                 let userDueDate = moment(user.end_date).format("YYYY-MM-DD hh:mm");
-                if(user.isActive === true && (today === userDueDate || today > userDueDate)){
+                if(today === userDueDate || today > userDueDate){
                     try {
                         await User.findOneAndUpdate(
-                          { _id : user._id},{ plan: "none", isActive:false, end_date: null}, { new: true }
+                          { _id : user._id},{ plan: "none",isActive:false, end_date: null, show_end_date:null}, { new: true }
                           )
                           .exec()
                           console.log(`${user.username} Unsubscription succeeded`)
