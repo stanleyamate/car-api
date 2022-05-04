@@ -23,7 +23,7 @@ import { CarList } from '../models/carList_model.js'
         doc.save().then(result=>{
         res.status(201).json(result); // 201:success in creation of resource
         }).catch (err=>{
-            res.status(500).json({ message: "could not create", error: err });
+            res.status(500).json({ message: {msg:"could not create",success:false}, error: err });
         })
 }
 export const updateCar= async(req, res)=>{

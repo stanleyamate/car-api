@@ -35,7 +35,7 @@ app.use(morgan(
 ))
 
 
-mongoose.connect(process.env.URL, function(err) {
+mongoose.connect('mongodb+srv://jamjohnson:sta78726486@cluster0.orzn2.mongodb.net/auto-care?retryWrites=true&w=majority', function(err) {
     if (err) throw err;
     console.log("Database Running...");
 }

@@ -34,7 +34,7 @@ export const updateUser = async (req, res) => {
             if (!doc) {
                 res.status(400).end()
             }  
-            res.status(200).json({message:"User updated", data: doc })
+            res.status(200).json({message:{msg:"User updated",success:true}, data: doc })
     } catch(error) {
         console.log(error)
     }
@@ -49,7 +49,7 @@ export const updateUser = async (req, res) => {
         if (!doc) {
             res.status(400).end()
         }
-        res.status(200).json({message:"User deleted", data: doc })
+        res.status(200).json({message:{msg:"User deleted", success:true}, data: doc })
     }
 
 
@@ -69,23 +69,23 @@ export const updateUser = async (req, res) => {
     const doc = await Services.find().exec()
     res.status(200).json({doc:doc})
   } catch (error) {
-      res.status(404).json({message : "services not found"});
+      res.status(404).json({ message :{msg:"services not found",success:false} });
   }
 }
 export const createService = async (req, res)=>{
 
   const doc = await Services.create({ ...req.body })
   if(!doc){
-      res.status(404).json({message: "not found"})
+      res.status(404).json({message:{msg:"Not found",success: false}})
   }
-  res.status(200).json({doc :doc});
+  res.status(200).json({message:{msg:"Not found",success: true},doc :doc});
 }
 export const updateService = async (req, res)=>{
 
   const doc = await Services.findOneAndUpdate({_id : req.params.id},req.body,
       { new: true })
-  res.status(200).json({
-      message :"service updated",
+  res.status(200).json({message:{msg:"Service updated",success: true},
+
       doc:doc
   })
 }
@@ -100,7 +100,7 @@ export const deleteService = async (req, res)=>{
   if (!doc) {
     res.status(400).end()
   }
-  res.status(200).json({message:"service deleted", data: doc })
+  res.status(200).json({message:{msg:"service deleted",success:true}, data: doc })
 }
 
 

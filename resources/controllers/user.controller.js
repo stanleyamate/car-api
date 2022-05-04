@@ -16,7 +16,7 @@ export const register =async (req, res, next) => {
       const oldUser = await User.findOne({ username });
     
     if (oldUser) {
-      return res.status(409).json({message:"User Already Exist."});
+      return res.status(409).json({message:{msg:"User Already Exist.", success:false}});
     }
     } catch (error) {
       console.log(error)
@@ -27,7 +27,7 @@ export const register =async (req, res, next) => {
     
     // Validate user input
     if (!(email && password && full_names && username)) {
-      res.status(400).json({message:"All inputs are required"});
+      res.status(400).json({message:{msg:"All inputs are required",success: false}});
     }
  
     // if(password != password2){
@@ -61,7 +61,7 @@ export const register =async (req, res, next) => {
         user.token = token;
       
       // return new user
-      return res.status(201).json({message:"Registration successful", user});
+      return res.status(201).json({message:{msg:"Registration successful",success: true}, user});
   }
     //Create user in our database
     if(req.file){
@@ -165,7 +165,7 @@ export const uploadImg = multer({
         user.isActive=false;
           
           // return new user
-        res.status(200).json({message:"no plan choosen, please choose plan first to subscribe"})
+        res.status(200).json({message:{msg:"no plan choosen, please choose plan first to subscribe",success: true}})
         }
       else if(plan == "weekly"){
 
@@ -176,7 +176,7 @@ export const uploadImg = multer({
           user.end_date=moment(new Date()).add(7,"days").format("YYYY-MM-DD hh:mm");
           user.show_end_date=moment(new Date()).add(7,"days").format("YYYY-MM-DD hh:mm");
 
-        res.status(200).json({message:"Weekly subscribe successful", update})
+        res.status(200).json({message:{msg:"Weekly subscribe successful",success: true}, update})
       }
       else if(plan == "monthly"){
          try {
@@ -186,7 +186,7 @@ export const uploadImg = multer({
             .exec()
           user.end_date=moment(new Date()).add(30,"days").format("YYYY-MM-DD hh:mm");
           user.show_end_date=moment(new Date()).add(30,"days").format("YYYY-MM-DD hh:mm");
-          res.status(200).json({message:"Monthly subscription successful",update})
+          res.status(200).json({message:{msg:"Monthly subscription successful",success: true},update})
          } catch (error) {
            console.log(error)
          }
@@ -195,7 +195,7 @@ export const uploadImg = multer({
           res.status(403).end()
       }
     } catch (e) {
-      return res.status(401).json({message:"error subscribing, please try again", error:e})
+      return res.status(401).json({message:{msg:"error subscribing, please try again",success: false}, error:e})
     }
   }
   export const unsubscribe = async (req, res)=>{
@@ -206,7 +206,7 @@ export const uploadImg = multer({
     try {
          const doc = await User.findOne({ _id:id }).exec()
           if (doc && userData.isActive === false) {
-            res.status(409).json({message:"user already unsubscribed"});
+            res.status(409).json({message:{msg:"user already unsubscribed",success: false}});
           }
           else{
           try {
@@ -214,7 +214,7 @@ export const uploadImg = multer({
               { _id : id},req.body, { new: true }
               )
               .exec()
-            res.status(200).json({update, message:"user unsubscribed successful"});
+            res.status(200).json({update, message:{msg:"user unsubscribed successful",success: true}});
 
           } catch (error) {
             console.log(error)
@@ -237,7 +237,7 @@ export const uploadImg = multer({
       try {
         const registeredUser= await User.findOne({email}).exec()
         if(!registeredUser){
-          res.status(404).json({message:`${email} is not found`})
+          res.status(404).json({message:{msg:`${email} is not found`,success: false}})
         }
       } catch (error) {
         console.log(error)
@@ -246,7 +246,7 @@ export const uploadImg = multer({
      
       // Validate user input
       if (!(email && password)) {
-        return res.status(400).json({message:"All inputs required"});
+        return res.status(400).json({message:{msg:"All inputs required",success: false}});
       }
       // Validate if user exist in our database
       const user = await User.findOne({ email });
@@ -263,9 +263,9 @@ export const uploadImg = multer({
           // save user tok en
           user.token = token;
           // user
-          return res.status(200).json({message:"Logged successful",user:user, token});
+          return res.status(200).json({message:{msg:"Logged successful",success: true},user:user, token});
         }else{
-         return res.status(401).json({message:"Invalid credentials"})
+         return res.status(401).json({message:{msg:"Invalid credentials",success: false}})
         }
       } catch (err) {
         console.log(err);
