@@ -100,9 +100,7 @@ export const register =async (req, res, next) => {
       console.log(err);
     }
   }
-    const createtoken=()=>{
-      
-    }
+   
   export const updateCar = async (req, res)=>{
      const id=req.params.id 
       if(req.file){ 
@@ -112,11 +110,13 @@ export const register =async (req, res, next) => {
         {image: req.file.path},
         { new: true }).exec()
        return res.status(200).json({
-        message :"Car Image updated.",
+        message :{msg:"Car Image updated.", success: true},
         doc
      })
        } catch (error) {
-         console.log(error)
+        return res.status(400).json({
+          message :{msg:"Could not updated Image.", success: false}
+       })
        }
       }
      
