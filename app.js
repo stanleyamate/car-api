@@ -21,13 +21,11 @@ const app = express()
 app.use(helmet())
 //for fast loading of routes
 app.use(compression());
-// app.use(cors({
-//     origin:"*",
-//     methods:"*"
-//     // origin:"http://localhost:3000",
-//     // withCredentials:true
-// }))
-app.use(cors())
+app.use(cors({
+    methods:"*",
+    origin:"http://localhost:3000",
+    withCredentials:true
+}))
 app.use(express.json({extended: true}))
 app.use(express.urlencoded({extended: true}))
 
