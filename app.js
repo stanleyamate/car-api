@@ -23,7 +23,7 @@ app.use(helmet({crossOriginEmbedderPolicy: false}))
 app.use(compression());
 app.use(cors({
     methods:"*",
-    origin:"http://localhost:3000",
+    origin:"https://autocare99.herokuapp.com",
     withCredentials:true
 }))
 app.use(express.json({extended: true}))
