@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 const config = process.env;
 
 const verifyToken = (req, res, next) => {
-
+  res.header("Access-Control-Allow-Origin", "*");
   const tokenHeader = req.headers.authorization;
    if(tokenHeader == null || tokenHeader == undefined){
     return res.status(401).send("A token is required for authentication");
