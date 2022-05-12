@@ -129,7 +129,7 @@ export const register =async (req, res, next) => {
       }
     },
     filename: function(req, file, cb){
-        cb(null,file.originalname) 
+        cb(null,file.filename + '-' + Date. now()) 
 
     }
     

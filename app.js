@@ -18,7 +18,7 @@ import compression from 'compression'
 const app = express()
 
 // for security
-app.use(helmet())
+app.use(helmet({crossOriginEmbedderPolicy: false}))
 //for fast loading of routes
 app.use(compression());
 app.use(cors({
