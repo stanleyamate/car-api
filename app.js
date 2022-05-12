@@ -22,7 +22,7 @@ app.use(helmet())
 //for fast loading of routes
 app.use(compression());
 app.use(cors({
-    origin:"http://localhost:3000",
+    origin:"*",
     withCredentials:true
 }))
 app.use(express.json({extended: true}))
