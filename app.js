@@ -22,7 +22,7 @@ app.use(helmet())
 //for fast loading of routes
 app.use(compression());
 app.use(cors({
-    origin:"*",
+    origin:"http://localhost:3000",
     withCredentials:true
 }))
 app.use(express.json({extended: true}))
@@ -40,12 +40,7 @@ app.use(morgan(
         ].join(' ');
     }
 ))
-var settings = {
-    server : {
-      reconnectTries : Number.MAX_VALUE,
-      autoReconnect : true
-    }
-  };
+
 
 mongoose.connect(process.env.URL, function(err) {
     if (err) throw err;
