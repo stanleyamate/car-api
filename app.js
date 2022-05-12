@@ -9,11 +9,18 @@ import {getAllServices} from './resources/controllers/services.controller.js'
 import adminRouter from './resources/routes/admin.router.js'
 import auth from './utils/auth.js';
 import checkUser from './utils/subauth.js';
-import checkActive from './utils/checkActive.js';
+// import checkActive from './utils/checkActive.js';
 import { subscriptionChecker } from './utils/job.js';
+import helmet from 'helmet'
+import compression from 'compression'
 
 
 const app = express()
+
+// for security
+app.use(helmet())
+//for fast loading of routes
+app.use(compression());
 app.use(cors({
     origin:"http://localhost:3000",
     withCredentials:true
@@ -33,11 +40,16 @@ app.use(morgan(
         ].join(' ');
     }
 ))
+var settings = {
+    server : {
+      reconnectTries : Number.MAX_VALUE,
+      autoReconnect : true
+    }
+  };
 
-
-mongoose.connect('mongodb+srv://jamjohnson:sta78726486@cluster0.orzn2.mongodb.net/auto-care?retryWrites=true&w=majority', function(err) {
+mongoose.connect(process.env.URL, function(err) {
     if (err) throw err;
-    console.log("Database Running...");
+    console.log("Database Running...", mongoose.connection.readyState);
 }
 )
 //user routes
