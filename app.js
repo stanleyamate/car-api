@@ -23,7 +23,7 @@ app.use(helmet({crossOriginEmbedderPolicy: false}))
 app.use(compression());
 app.use(cors({
     methods:"*",
-    origin:"https://autocare99.herokuapp.com",
+    origin:["https://autocare99.herokuapp.com", "http://localhost:3000"],
     withCredentials:true
 }))
 app.use(express.json({extended: true}))
@@ -60,11 +60,11 @@ app.put('/api/unsubscribe/:id', unsubscribe)
 app.patch('/api/car/:id',uploadImg, updateCar)
 app.use('/api/admin/carlist', carListRouter)
 app.use('/api/admin',checkUser, adminRouter)
-// app.use( (req, res, next)=>{
-//     const error = new Error("Not Found");
-//     error.status=404;
-//     next(error)
-// })
+app.use( (req, res, next)=>{
+    const error = new Error("Not Found");
+    error.status=404;
+    next(error)
+})
 app.use((error, req, res, next)=>{
        res.status(error.status || 500);
        res.json({
