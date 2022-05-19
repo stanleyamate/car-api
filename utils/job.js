@@ -14,7 +14,7 @@ export const subscriptionChecker = ()=>{
                 if(today === userDueDate || today > userDueDate){
                     try {
                         await User.findOneAndUpdate(
-                          { _id : user._id},{ plan: "none",isActive:false, end_date: null, show_end_date:null}, { new: true }
+                          { _id : user._id},{ plan: "none",isActive:false, end_date: null, show_end_date:""}, { new: true }
                           )
                           .exec()
                           console.log(`${user.username} Unsubscription succeeded`)

@@ -37,6 +37,7 @@ export const register =async (req, res, next) => {
     encryptedPassword = await bcrypt.hash(password, 10);
     if( plan == "none"){
       isActive = false;
+      show_end_date=""
     }
     else if(plan == "weekly"){
     isActive = true;
@@ -162,6 +163,7 @@ export const uploadImg = multer({
       }
       else if(plan == "none"){
         user.isActive=false;
+        user.show_end_date=""
           
           // return new user
         res.status(200).json({message:{msg:"no plan choosen, please choose plan first to subscribe",success: true}})
