@@ -62,8 +62,7 @@ export const register =async (req, res, next) => {
         user.token = token;
       
       // return new user
-      return res.status(201).json({message:{msg:"Registration successful",success: true}, user});
-  }
+    }
     //Create user in our database
     if(req.file){
       const user = await User.create({
@@ -80,6 +79,7 @@ export const register =async (req, res, next) => {
         image: req.file.path
       });
       createToken(user)
+      res.status(201).json({message:{msg:"Registration successful",success: true}, user});
     }else{
       const user = await User.create({
         full_names,
@@ -94,6 +94,8 @@ export const register =async (req, res, next) => {
         show_end_date
       });
       createToken(user)
+      res.status(201).json({message:{msg:"Registration successful",success: true}, user});
+
     }
 
   
