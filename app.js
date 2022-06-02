@@ -7,6 +7,7 @@ import carListRouter from './resources/routes/carListRoute.js'
 import { register, login, subscribe, unsubscribe, uploadImg, updateCar } from './resources/controllers/user.controller.js'
 import {getAllServices} from './resources/controllers/services.controller.js'
 import adminRouter from './resources/routes/admin.router.js'
+import employeeRouter from './resources/routes/employee.router.js'
 import auth from './utils/auth.js';
 import checkUser from './utils/subauth.js';
 // import checkActive from './utils/checkActive.js';
@@ -53,6 +54,7 @@ app.get('/', (req, res)=>res.send({message:"welcome to auto-care api"}))
 app.post('/register',uploadImg, register)
 app.post('/login', login)
 app.get('/service', getAllServices)
+app.use('/employees', employeeRouter)
 
 app.use('/api', auth)
 app.put('/api/subscribe/:id', subscribe)

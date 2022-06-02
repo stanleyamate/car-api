@@ -11,6 +11,7 @@ const verifyToken = (req, res, next) => {
   try {
     const token = tokenHeader.split(' ')[1];
     const decoded = jwt.verify(token, config.TOKEN_KEY);
+    
      req.userData = decoded;
     next();
   } catch (err) {

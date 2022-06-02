@@ -242,10 +242,11 @@ export const uploadImg = multer({
         if(!registeredUser){
           res.status(404).json({message:{msg:`${email} is not found`,success: false}})
         }
-      } catch (error) {
+      } 
+      catch (error) {
         console.log(error)
       }
-    try {
+      try {
      
       // Validate user input
       if (!(email && password)) {
